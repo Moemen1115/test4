@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>اخر اختبار(: </title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      /* background-image: url(https://wallpaperaccess.com/full/2384075.jpg); */
+      background-image: url(https://images.pexels.com/photos/1205651/pexels-photo-1205651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+      /*  */
+      background-size: cover;
+      background-position: center;
+      /* background-repeat: no-repeat; */
+      /* direction: rtl; */
+      /* font-family: "Trirong", serif; */
+      color: #222;
+    }
+
+    .n {
+      background: rgba(255, 255, 255, 0.6);
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.76);
+      border-radius: 20px;
+      max-width: 800px;
+      width: 100%;
+      margin: 50px auto;
+    }
+
+    h5 {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    h6 {
+      font-size: 1rem;
+    }
+
+    .progress {
+      height: 18px;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #e0e0e0;
+    }
+
+    .progress-bar {
+      background-color: #007bff;
+    }
+
+    .question-container {
+      display: none;
+    }
+
+    .question-container.active {
+      display: block;
+    }
+
+    .option-box {
+      border: 2px solid #ddd;
+      padding: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      background-color: #f9f9f9;
+      font-size: 0.9rem;
+    }
+
+    .option-box:hover {
+      background-color: #f1f1f1;
+
+    }
+
+    .correct {
+      background-color: #28a745 !important;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: #dc3545 !important;
+      color: white;
+    }
+
+    #score-container {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #444;
+    }
+
+    #end-of-page {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    #end-of-page a {
+      color: #011e3d;
+      text-decoration: none;
+    }
+
+    #end-of-page a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 576px) {
+      .n {
+        padding: 15px;
+      }
+
+      h5 {
+        font-size: 1.2rem;
+      }
+
+      .option-box {
+        font-size: 0.9rem;
+      }
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    .t {
+
+      color: #011e3d;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+
+    <div class="container n">
+      <h5 class="text-center">اختبار البصمجة |  TEST :) </h5>
+      <div class="progress mt-3">
+        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0"
+          aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <div id="score-container" class="text-center mt-3"></div>
+      <hr />
+      <div id="quiz-container" class="mt-3"></div>
+      <hr />
+      <div id="end-of-page">
+        <p>خلاااااص هااانت ياا صديقي باقي من 16 ساعه :)</p>
+        <p>أخر اختبار بصمجه</p>
+        <p>By: Mohamed Abdel Fatah Halabi</p>
+        <p><a href="https://github.com/Moemen1115">Github</a> | <a
+            href="https://www.linkedin.com/in/mohamed-abdel-fatah-0369b6221">LinkedIn</a></p>
+      </div>
+    </div>
+  </main>
+
+  <audio id="correct-sound" src="correct.mp3"></audio>
+  <audio id="incorrect-sound" src="g.mp3"></audio>
+
+  <script>
+    const questions = [
+      {
+        question: "The receiving end power factor of short transmission line is changing from lagging to leading. The voltage regulation of the line will…..",
+        options: ["Remain same", "increase", "decrease", "None of above"],
+        answer: 2
+      },
+      {
+        question: "Negative voltage regulation of transmission line means….",
+        options: ["VR = VS", "VR > VS", "VR = VS", "None of above"],
+        answer: 1
+      },
+      {
+        question: "As the line inductance increases, the transmission capacity",
+        options: ["Remain same", "increase", "decrease", "None of above"],
+        answer: 2
+      },
+      {
+        question: "In AC system, the skin effect….",
+        options: ["causes greater power", "Increases the resistance of conductor", "Reduces the effective area of conductor", "all of above"],
+        answer: 3
+      },
+      {
+        question: "Efficiency of bridge full wave rectifier is",
+        options: ["81.1%", "50%", "40.6%", "45.33%"],
+        answer: 0
+      },
+      {
+        question: "Find the average value of output current for a 1-phase HW diode rectifier with R load, having RMS output current = 100A.",
+        options: ["200/π A", "200/R√2 A", "100/R√2 A", "100/π A"],
+        answer: 0
+      },
+      {
+        question: "In a three-phase half wave diode rectifier using 3 diodes,",
+        options: ["All diodes conduct together", "Only one diode conducts at a time", "Only two diodes conduct at a time", "None of above"],
+        answer: 1
+      },
+      {
+        question: "In a 3-phase half-wave rectifier, each diode is subjected to a Peak Inverse Voltage (PIV) of ....",
+        options: ["Vm", "Vm/√2", "√2 Vm", "√3 Vm"],
+        answer: 3
+      },
+      {
+        question: "A chopper may be thought as a….",
+        options: ["Inverter with DC input", "DC equivalent of an AC transformer", "Diode rectifier", "DC equivalent of an induction motor"],
+        answer: 1
+      },
+      {
+        question: "What is the duty cycle of a chopper?",
+        options: ["Ton/Toff", "Ton/T", "T/Ton", "Toff x Ton"],
+        answer: 1
+      },
+      {
+        question: "The form factor is defined as FF ……",
+        options: ["Vac/Vrms", "Vrms/Vdc", "Vrms/Vac", "Vdc/Vrms"],
+        answer: 1
+      },
+      {
+        question: "The transformer utilization factor is defined as TUF ……",
+        options: ["Pac/Vdc.Idc", "Pdc/Vrms.Irms", "Pac/Vs.Is", "Pdc/Vs.Is"],
+        answer: 3
+      },
+      {
+        question: "Ideally the voltage drop across a conducting diode …….",
+        options: ["0", "∞", "0.7 V", "Vs"],
+        answer: 0
+      },
+      {
+        question: "A three-phase full-wave rectifier, feeding a dc load at a fixed current of 30 A, the rms current through each diode is …… A",
+        options: ["30", "30/√3", "30/√2", "30√3"],
+        answer: 1
+      },
+      {
+        question: "A single-phase full-wave rectifier. When α=0°, the output de voltage is 300 V. When α=30°, the output de voltage will be ……V.",
+        options: ["59", "129.9", "159.8", "259.8"],
+        answer: 3
+      },
+      {
+        question: "A three-phase half-wave rectifier requires diodes.",
+        options: ["2", "3", "4", "6"],
+        answer: 1
+      },
+      {
+        question: "For a three-phase half-wave diode rectifier, the ratio of Vdc to Vm",
+        options: ["0.955", "0.827", "1.654", "1.169"],
+        answer: 1
+      },
+      {
+        question: "A single-phase FW rectifier, Vs=120 V rms, α= 90° and the load current is constant Idc, Vdc=…. V",
+        options: ["0", "70.4", "102", "170"],
+        answer: 0
+      },
+      {
+        question: "For three-phase full-wave rectifier, the maximum output de voltage =….",
+        options: ["3√3 Vm / π", "3√3 Vm / 2π", "3√2 Vm / π", "3√2 Vm / 2π"],
+        answer: 0
+      },
+      {
+        question: "A single-phase full converter, the load current is a ripple free current of Idc then the average current of each diode, Id=….",
+        options: ["Idc/4", "Idc/3", "Idc/2", "Idc"],
+        answer: 2
+      },
+      {
+        question: "For single-phase full-wave diode rectifiers, the RMS of output voltage …..V",
+        options: ["Vm/2", "Vm/√2", "2Vm", "√2Vm"],
+        answer: 1
+      },
+      {
+        question: "For single-phase half-wave controlled rectifiers, the average output voltage Vdc=…..",
+        options: ["2Vm/π cos α", "2Vm/π cos(1 + α)", "Vm/2π cos α", "Vm/2π (1 + cos α)"],
+        answer: 3
+      },
+      {
+        question: "For single-phase center-tapped transformer rectifiers, the PIV=….",
+        options: ["Vm", "Vm/√2", "2Vm", "√2Vm"],
+        answer: 2
+      },
+      {
+        question: "For ideal single-phase controlled rectifiers, and resistive load, the voltage across the thyristor is zero for ωt=…",
+        options: ["0 to α", "0 to π", "0 to 2π", "α to π"],
+        answer: 3
+      },
+      {
+        question: "Three-phase…… circuits require a neutral point.",
+        options: ["Semi-converter", "Half-wave converter", "Full-wave converter"],
+        answer: 1
+      },
+      {
+        question: "Free-wheeling diodes are connected across the dc load to",
+        options: ["Smooth the output voltage", "Prevent negative", "a) and b)", "None"],
+        answer: 2
+      },
+      {
+        question: "In a single-phase HW diode rectifier with R load, the average value of load current is given by…..",
+        options: ["Vm /R", "Vm/2R", "Vm/πR", "2Vm/πR"],
+        answer: 2
+      },
+      {
+        question: "Single line diagram of which of the following power system is possible?",
+        options: [
+          "Power system with LG fault",
+          "Balanced power system",
+          "Power system with LL fault",
+          "Power system with LLG fault"
+        ],
+        answer: 1
+      },
+      {
+        question: "Three identical alternators each are rated for 15 MVA, 11 KV having sub-transient reactance of 15% are working in parallel. The short circuit level at the busbar is",
+        options: ["5 MVA", "45 MVA", "300 MVA", "30 MVA"],
+        answer: 2
+      },
+      {
+        question: "Maximum power transfer capability of transmission line can be increased by",
+        options: [
+          "parallel transmission line",
+          "using series capacitance",
+          "using bundled conductors",
+          "all of the above"
+        ],
+        answer: 3
+      },
+      {
+        question: "For flat voltage profile system, voltage regulation is",
+        options: ["0 %", "100 %", "50 %", "any of the above"],
+        answer: 0
+      },
+      {
+        question: "Ferranti effect will not occur in which of the following transmission lines",
+        options: [
+          "long transmission line",
+          "medium transmission line",
+          "short transmission line",
+          "all of the above"
+        ],
+        answer: 2
+      },
+      {
+        question: "Ferranti effect can be compensated by which of the following",
+        options: [
+          "shunt capacitor",
+          "shunt reactor",
+          "series capacitor",
+          "both 1 and 2"
+        ],
+        answer: 1
+      },
+      {
+        question: "A transmission line has a reactance of 1 Pu is operating at Vs = Vr = 1 Pu. The generator is connected at source end which is delivering 0.5 Pu of active power. Find the load angle?",
+        options: ["35°", "45°", "30°", "60°"],
+        answer: 2
+      },
+      {
+        question: "The skin effect shows that",
+        options: [
+          "the distribution of AC current is uniform through the cross section of the conductor",
+          "current density is more at the center of the conductor",
+          "current density is lower at the surface of the conductor",
+          "current density is more at the surface of the conductor"
+        ],
+        answer: 3
+      },
+      {
+        question: "The ABCD constants of a 3-phase transmission line are A = D = 0.8∠1°, B = 170∠85° Ω, C = 0.002∠90.4°. The sending end voltage is 400 kV. The receiving end voltage under no load condition is",
+        options: ["400 KV", "500 KV", "600 KV", "350 KV"],
+        answer: 1
+      },
+      {
+        question: "For a 400 KV transmission line, the surge impedance is 400 Ω. The SIL is",
+        options: ["400 MW", "500 MW"],
+        answer: 0
+      },
+      {
+        question: "Bundled conductors are used for EHV transmission lines primarily for reducing the",
+        options: ["corona loss", "copper loss", "voltage drop across the line", "surge impedance of the line"],
+        answer: 0
+      },
+      {
+        question: "By using guard ring in a transmission line, its string efficiency",
+        options: ["increased", "decreased", "remains unaffected", "none of the above"],
+        answer: 0
+      },
+      {
+        question: "The power station that doesn’t require any moving parts",
+        options: [
+          "tidal power station",
+          "wind power station",
+          "solar power station",
+          "steam power station"
+        ],
+        answer: 2
+      },
+      {
+        question: "Which of the following generating plants has the minimum operating cost",
+        options: [
+          "diesel plant",
+          "hydroelectric plant",
+          "steam plant",
+          "nuclear plant"
+        ],
+        answer: 1
+      },
+      {
+        question: "Which of the following is true regarding HVDC?",
+        options: [
+          "there is no skin effect",
+          "HVDC can utilize earth for its return path",
+          "corona loss is very much reduced in the dc line",
+          "all of the above"
+        ],
+        answer: 3
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function showQuestion(index) {
+      const quizContainer = document.getElementById("quiz-container");
+      quizContainer.innerHTML = `
+                <div class="question-container active">
+                    <h6 class="text-right">رقم السؤال ${index + 1} من ${questions.length}</h6>
+                    <h5 class="t">${questions[index].question}</h5>
+                    <div id="options-container"></div>
+                </div>`;
+
+      const optionsContainer = document.getElementById("options-container");
+      questions[index].options.forEach((option, i) => {
+        const optionBox = document.createElement("div");
+        optionBox.className = "option-box";
+        optionBox.textContent = option;
+        optionBox.onclick = () => checkAnswer(i);
+        optionsContainer.appendChild(optionBox);
+      });
+    }
+
+    function checkAnswer(selectedIndex) {
+      const answer = questions[currentQuestionIndex].answer;
+      questions[currentQuestionIndex].selectedIndex = selectedIndex;
+
+      const options = document.querySelectorAll(".option-box");
+
+      if (selectedIndex === answer) {
+        score++;
+        options[answer].classList.add("correct");
+        document.getElementById("correct-sound").play();
+      } else {
+        options[selectedIndex].classList.add("incorrect");
+        options[answer].classList.add("correct");
+        document.getElementById("incorrect-sound").play();
+      }
+
+      setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+          showQuestion(currentQuestionIndex);
+          updateProgressBar();
+        } else {
+          showScore();
+          showSolutions();
+        }
+      }, 1000);
+    }
+
+    function showScore() {
+      const quizContainer = document.getElementById("quiz-container");
+      const scoreContainer = document.getElementById("score-container");
+      quizContainer.innerHTML = "";
+      scoreContainer.innerHTML = `<h5>نتيجتك: ${score} من ${questions.length}</h5>`;
+    }
+
+    function showSolutions() {
+      const quizContainer = document.getElementById("quiz-container");
+      const solutionsContainer = document.createElement("div");
+      quizContainer.appendChild(solutionsContainer);
+
+      questions.forEach((question, index) => {
+        const solutionDiv = document.createElement("div");
+        solutionDiv.innerHTML = `
+                    <h6 class="text-danger">${index + 1}. ${question.question}</h6>
+                    ${question.selectedIndex !== undefined ? `<p><strong>إجابتك:</strong> ${question.options[question.selectedIndex]}</p>` : ''}
+                    <p><strong>الإجابة الصحيحة:</strong> ${question.options[question.answer]}</p>
+                `;
+        solutionsContainer.appendChild(solutionDiv);
+      });
+    }
+
+    function updateProgressBar() {
+      const progressBar = document.getElementById("progress-bar");
+      const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+      progressBar.style.width = `${progress}%`;
+      progressBar.setAttribute("aria-valuenow", progress);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      shuffle(questions);
+      showQuestion(currentQuestionIndex);
+      updateProgressBar();
+    });
+  </script>
+</body>
+
+</html>
